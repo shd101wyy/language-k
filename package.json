@@ -1,0 +1,16 @@
+{
+  "name": "language-k",
+  "version": "0.0.0",
+  "description": "K Framework syntax highlighting",
+  "keywords": [
+    "language",
+    "grammar",
+    "k",
+    "kframework"
+  ],
+  "repository": "https://github.com/atom/language-k",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  }
+}

@@ -1,0 +1,105 @@
+# If this is your first time writing a language grammar, check out:
+#   - http://manual.macromates.com/en/language_grammars
+
+'scopeName': 'source.k'
+'name': 'K Framework'
+'fileTypes': [
+  'k'
+]
+'patterns': [
+  # comments
+  {
+    'match': '^\\s*\/\/.*$'
+    'name': 'comment.line.k'
+  }
+  {
+    'begin': '/\\*'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.comment.begin.k'
+    'end': '\\*/'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.comment.end.k'
+    'name': 'comment.block.k'
+  }
+  # string escapes
+  'string_escapes':
+    'patterns': [
+      {
+        'match': '\\\\u(?![A-Fa-f0-9]{4}|{[A-Fa-f0-9]+})[^\'"]*'
+        'name': 'invalid.illegal.unicode-escape.k'
+      }
+      {
+        'match': '\\\\u(?:[A-Fa-f0-9]{4}|({)([A-Fa-f0-9]+)(}))'
+        'name': 'constant.character.escape.k'
+        'captures':
+          '1':
+            'name': 'punctuation.definition.unicode-escape.begin.bracket.curly.k'
+          '2':
+            'patterns': [
+              {
+                # Max codepoint: \u{10FFFF}
+                'match': '[A-Fa-f\\d]{7,}|(?!10)[A-Fa-f\\d]{6}'
+                'name': 'invalid.illegal.unicode-escape.k'
+              }
+            ]
+          '3':
+            'name': 'punctuation.definition.unicode-escape.end.bracket.curly.k'
+      }
+      {
+        'match': '\\\\(x[0-9A-Fa-f]{2}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.)'
+        'name': 'constant.character.escape.k'
+      }
+    ]
+  # string
+  {
+    'begin': '"'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.string.begin.k'
+    'end': '"'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.string.end.k'
+    'name': 'string.quoted.double.k'
+    'patterns': [
+      {
+        'include': '#string_escapes'
+      }
+      {
+        'match': '[^"]*[^\\n\\r"\\\\]$'
+        'name': 'invalid.illegal.string.k'
+      }
+    ]
+  }
+  {
+    'match': '\\b(strict|avoid|prefer|bracket|non-assoc|seqstrict|left|right|macro|token|notInRules|autoReject|structural)\\b'
+    'name': 'token.keyword'
+  }
+  {
+    'match': '\\b(syntax|rule|Id|Int|Bool|String|configuration|imports|require|Token|Lexer|Float|requires|Kresult|context)\\b'
+    'name': 'token.keyword'
+  }
+  {
+    'match': '\\b(module|endmodule)\\b'
+    'name': 'token.keyword'
+  }
+  # tags
+  {
+    'begin': '\\<\/?'
+    'beginCaptures':
+      '0':
+        'name': 'meta.brace.square.k'
+    'end': '\\>'
+    'endCaptures':
+      '0':
+        'name': 'meta.brace.square.k'
+    'patterns': [
+      {
+        'name': 'entity.name.tag.k'
+        'match': '\\w+'
+      }
+    ]
+  }
+]
