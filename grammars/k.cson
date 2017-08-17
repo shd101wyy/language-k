@@ -1,55 +1,57 @@
 # If this is your first time writing a language grammar, check out:
 #   - http://manual.macromates.com/en/language_grammars
 
-'scopeName': 'source.k'
+'scopeName': 'source'
 'name': 'K Framework'
 'fileTypes': [
   'k'
 ]
 'patterns': [
   # comments
+  ## line comments
   {
     'match': '^\\s*\/\/.*$'
-    'name': 'comment.line.k'
+    'name': 'comment.line'
   }
+  ## block comments
   {
     'begin': '/\\*'
     'beginCaptures':
       '0':
-        'name': 'punctuation.definition.comment.begin.k'
+        'name': 'punctuation.definition.comment.begin'
     'end': '\\*/'
     'endCaptures':
       '0':
-        'name': 'punctuation.definition.comment.end.k'
-    'name': 'comment.block.k'
+        'name': 'punctuation.definition.comment.end'
+    'name': 'comment.block'
   }
   # string escapes
   'string_escapes':
     'patterns': [
       {
         'match': '\\\\u(?![A-Fa-f0-9]{4}|{[A-Fa-f0-9]+})[^\'"]*'
-        'name': 'invalid.illegal.unicode-escape.k'
+        'name': 'invalid.illegal.unicode-escape'
       }
       {
         'match': '\\\\u(?:[A-Fa-f0-9]{4}|({)([A-Fa-f0-9]+)(}))'
-        'name': 'constant.character.escape.k'
+        'name': 'constant.character.escape'
         'captures':
           '1':
-            'name': 'punctuation.definition.unicode-escape.begin.bracket.curly.k'
+            'name': 'punctuation.definition.unicode-escape.begin.bracket.curly'
           '2':
             'patterns': [
               {
                 # Max codepoint: \u{10FFFF}
                 'match': '[A-Fa-f\\d]{7,}|(?!10)[A-Fa-f\\d]{6}'
-                'name': 'invalid.illegal.unicode-escape.k'
+                'name': 'invalid.illegal.unicode-escape'
               }
             ]
           '3':
-            'name': 'punctuation.definition.unicode-escape.end.bracket.curly.k'
+            'name': 'punctuation.definition.unicode-escape.end.bracket.curly'
       }
       {
         'match': '\\\\(x[0-9A-Fa-f]{2}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.)'
-        'name': 'constant.character.escape.k'
+        'name': 'constant.character.escape'
       }
     ]
   # string
@@ -57,47 +59,79 @@
     'begin': '"'
     'beginCaptures':
       '0':
-        'name': 'punctuation.definition.string.begin.k'
+        'name': 'punctuation.definition.string.begin'
     'end': '"'
     'endCaptures':
       '0':
-        'name': 'punctuation.definition.string.end.k'
-    'name': 'string.quoted.double.k'
+        'name': 'punctuation.definition.string.end'
+    'name': 'string.quoted.double'
     'patterns': [
       {
         'include': '#string_escapes'
       }
       {
         'match': '[^"]*[^\\n\\r"\\\\]$'
-        'name': 'invalid.illegal.string.k'
+        'name': 'invalid.illegal.string'
       }
     ]
   }
+  # operators
+  {
+    'match': '::=|\\+|\\-|\\*|\\/|=>',
+    'name': 'keyword.operator'
+  }
+  # keywords
   {
     'match': '\\b(strict|avoid|prefer|bracket|non-assoc|seqstrict|left|right|macro|token|notInRules|autoReject|structural)\\b'
     'name': 'token.keyword'
   }
   {
-    'match': '\\b(syntax|rule|Id|Int|Bool|String|configuration|imports|require|Token|Lexer|Float|requires|Kresult|context)\\b'
+    'match': '\\b(syntax|rule|configuration|imports|require|requires|Kresult|context)\\b'
     'name': 'token.keyword'
   }
+  # module
   {
-    'match': '\\b(module|endmodule)\\b'
+    'match': '^\\s*(module)\\s+([\\s\\S]+?)$'
+    'captures':
+      '1':
+        'name': 'token.keyword'
+      '2':
+        'name': 'entity.name.function'
+  }
+  {
+    'match': '\\b(endmodule)\\b'
     'name': 'token.keyword'
+  }
+  # brackets
+  {
+    'begin': '\\['
+    'beginCaptures':
+      '0':
+        'name': 'meta.brace.square'
+    'end': '\\]'
+    'endCaptures':
+      '0':
+        'name': 'meta.brace.square'
+    'patterns': [
+      {
+        'name': 'entity.name.tag'
+        'match': '\\w+'
+      }
+    ]
   }
   # tags
   {
     'begin': '\\<\/?'
     'beginCaptures':
       '0':
-        'name': 'meta.brace.square.k'
+        'name': 'meta.brace.square'
     'end': '\\>'
     'endCaptures':
       '0':
-        'name': 'meta.brace.square.k'
+        'name': 'meta.brace.square'
     'patterns': [
       {
-        'name': 'entity.name.tag.k'
+        'name': 'entity.name.tag'
         'match': '\\w+'
       }
     ]
